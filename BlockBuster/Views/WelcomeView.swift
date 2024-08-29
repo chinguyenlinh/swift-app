@@ -3,6 +3,7 @@ import SwiftUI
 struct WelcomeView: View {
     @State private var username: String = ""
     @State private var isLoggedIn: Bool = false
+    @StateObject private var userManager = UserManager()
 
     var body: some View {
         NavigationStack {
@@ -17,10 +18,7 @@ struct WelcomeView: View {
                     .padding()
                 
                 Button(action: {
-                    // Handle login/register action
-                    if !username.isEmpty {
-                        isLoggedIn = true
-                    }
+                    handleLoginOrRegister()
                 }) {
                     Text("Login / Register")
                         .foregroundColor(.white)
@@ -41,6 +39,42 @@ struct WelcomeView: View {
                 DashboardView()
             }
         }
+    }
+
+    private func handleLoginOrRegister() {
+        guard !username.isEmpty else { return }
+
+        if let existingUser = userManager.getUser(username: username) {
+            print("User exists: \(existingUser)")
+        } else {
+            let newUser = User(
+                username: username,
+                totalScore: 0,
+                numGame: 0,
+                winRate: 0,
+                history: [],
+                milestone: Milestone(
+                    over10Score: false,
+                    over20Score: false,
+                    over50Score: false,
+                    firstGamePlayedOnEasy: false,
+                    firstGamePlayedOnMedium: false,
+                    firstGamePlayedOnHard: false
+                ),
+                achievement: Achievement(
+                    explorersFirstStep: false,
+                    strategicThinker: false,
+                    persistentPlayer: false,
+                    curiousMind: false,
+                    precisionTraining: false,
+                    quickLearner: false
+                )
+            )
+            userManager.addUser(newUser)
+            print("Created new user: \(newUser)")
+        }
+
+        isLoggedIn = true
     }
 }
 

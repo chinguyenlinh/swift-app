@@ -16,6 +16,12 @@
 		6D9C91682C808D1700232A07 /* BlockBusterUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D9C91672C808D1700232A07 /* BlockBusterUITestsLaunchTests.swift */; };
 		6D9C91762C8090A800232A07 /* WelcomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D9C91752C8090A800232A07 /* WelcomeView.swift */; };
 		6D9C91782C80915900232A07 /* DashboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D9C91772C80915900232A07 /* DashboardView.swift */; };
+		6D9C917B2C80938B00232A07 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D9C917A2C80938B00232A07 /* User.swift */; };
+		6D9C917D2C80939E00232A07 /* Achievement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D9C917C2C80939E00232A07 /* Achievement.swift */; };
+		6D9C917F2C8093A700232A07 /* Milestone.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D9C917E2C8093A700232A07 /* Milestone.swift */; };
+		6D9C91842C80971800232A07 /* GameHistory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D9C91832C80971800232A07 /* GameHistory.swift */; };
+		6D9C91862C80974B00232A07 /* UserManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D9C91852C80974B00232A07 /* UserManager.swift */; };
+		6D9C91882C80986600232A07 /* DebugView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D9C91872C80986600232A07 /* DebugView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -48,6 +54,12 @@
 		6D9C91672C808D1700232A07 /* BlockBusterUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockBusterUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		6D9C91752C8090A800232A07 /* WelcomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeView.swift; sourceTree = "<group>"; };
 		6D9C91772C80915900232A07 /* DashboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardView.swift; sourceTree = "<group>"; };
+		6D9C917A2C80938B00232A07 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		6D9C917C2C80939E00232A07 /* Achievement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Achievement.swift; sourceTree = "<group>"; };
+		6D9C917E2C8093A700232A07 /* Milestone.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Milestone.swift; sourceTree = "<group>"; };
+		6D9C91832C80971800232A07 /* GameHistory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameHistory.swift; sourceTree = "<group>"; };
+		6D9C91852C80974B00232A07 /* UserManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserManager.swift; sourceTree = "<group>"; };
+		6D9C91872C80986600232A07 /* DebugView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DebugView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -98,6 +110,8 @@
 		6D9C91492C808D1500232A07 /* BlockBuster */ = {
 			isa = PBXGroup;
 			children = (
+				6D9C91802C80951600232A07 /* Utils */,
+				6D9C91792C80935E00232A07 /* Models */,
 				6D9C91742C80908500232A07 /* Views */,
 				6D9C914A2C808D1500232A07 /* BlockBusterApp.swift */,
 				6D9C914C2C808D1500232A07 /* ContentView.swift */,
@@ -136,9 +150,29 @@
 			isa = PBXGroup;
 			children = (
 				6D9C91752C8090A800232A07 /* WelcomeView.swift */,
+				6D9C91872C80986600232A07 /* DebugView.swift */,
 				6D9C91772C80915900232A07 /* DashboardView.swift */,
 			);
 			path = Views;
+			sourceTree = "<group>";
+		};
+		6D9C91792C80935E00232A07 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				6D9C917A2C80938B00232A07 /* User.swift */,
+				6D9C91832C80971800232A07 /* GameHistory.swift */,
+				6D9C917C2C80939E00232A07 /* Achievement.swift */,
+				6D9C917E2C8093A700232A07 /* Milestone.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		6D9C91802C80951600232A07 /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				6D9C91852C80974B00232A07 /* UserManager.swift */,
+			);
+			path = Utils;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -271,10 +305,16 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6D9C91862C80974B00232A07 /* UserManager.swift in Sources */,
 				6D9C914D2C808D1500232A07 /* ContentView.swift in Sources */,
 				6D9C91782C80915900232A07 /* DashboardView.swift in Sources */,
 				6D9C91762C8090A800232A07 /* WelcomeView.swift in Sources */,
+				6D9C917B2C80938B00232A07 /* User.swift in Sources */,
 				6D9C914B2C808D1500232A07 /* BlockBusterApp.swift in Sources */,
+				6D9C91882C80986600232A07 /* DebugView.swift in Sources */,
+				6D9C917D2C80939E00232A07 /* Achievement.swift in Sources */,
+				6D9C91842C80971800232A07 /* GameHistory.swift in Sources */,
+				6D9C917F2C8093A700232A07 /* Milestone.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
