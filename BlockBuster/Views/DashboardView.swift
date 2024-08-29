@@ -9,6 +9,7 @@ struct DashboardView: View {
     @State private var showingAchievements = false
     @State private var showingMilestones = false
     @State private var showingHistory = false
+    @State private var showingGameSettings = false
 
     var body: some View {
         NavigationStack {
@@ -73,6 +74,21 @@ struct DashboardView: View {
                         }
                         .sheet(isPresented: $showingHistory) {
                             HistoryView(user: user)
+                        }
+                        
+                        // Play Button
+                        Button(action: {
+                            showingGameSettings = true
+                        }) {
+                            VStack(alignment: .leading, spacing: 10) {
+                                Text("Play")
+                            }
+                            .padding()
+                            .background(Color.orange.opacity(0.1))
+                            .cornerRadius(10)
+                        }
+                        .sheet(isPresented: $showingGameSettings) {
+                            GameSettingView()
                         }
                     }
                 } else {
