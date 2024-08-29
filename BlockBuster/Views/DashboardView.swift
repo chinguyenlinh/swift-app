@@ -6,6 +6,9 @@ struct DashboardView: View {
     let username: String
     
     @State private var user: User?
+    @State private var showingAchievements = false
+    @State private var showingMilestones = false
+    @State private var showingHistory = false
 
     var body: some View {
         NavigationStack {
@@ -26,59 +29,51 @@ struct DashboardView: View {
                         .padding()
                         .background(Color.gray.opacity(0.1))
                         .cornerRadius(10)
-
+                        
                         // Milestones
-                        let completedMilestones = [
-                            user.milestone.over10Score,
-                            user.milestone.over20Score,
-                            user.milestone.over50Score,
-                            user.milestone.firstGamePlayedOnEasy,
-                            user.milestone.firstGamePlayedOnMedium,
-                            user.milestone.firstGamePlayedOnHard
-                        ].filter { $0 }.count
-
-                        VStack(alignment: .leading, spacing: 10) {
-                            Text("Milestones: \(completedMilestones)/6")
+                        Button(action: {
+                            showingMilestones = true
+                        }) {
+                            VStack(alignment: .leading, spacing: 10) {
+                                Text("Milestones: \(completedMilestones())/6")
+                            }
+                            .padding()
+                            .background(Color.yellow.opacity(0.1))
+                            .cornerRadius(10)
                         }
-                        .padding()
-                        .background(Color.yellow.opacity(0.1))
-                        .cornerRadius(10)
+                        .sheet(isPresented: $showingMilestones) {
+                            MilestoneView(user: user)
+                        }
 
                         // Achievements
-                        let completedAchievements = [
-                            user.achievement.explorersFirstStep,
-                            user.achievement.strategicThinker,
-                            user.achievement.persistentPlayer,
-                            user.achievement.curiousMind,
-                            user.achievement.precisionTraining,
-                            user.achievement.quickLearner
-                        ].filter { $0 }.count
-
-                        VStack(alignment: .leading, spacing: 10) {
-                            Text("Achievements: \(completedAchievements)")
+                        Button(action: {
+                            showingAchievements = true
+                        }) {
+                            VStack(alignment: .leading, spacing: 10) {
+                                Text("Achievements: \(completedAchievements())")
+                            }
+                            .padding()
+                            .background(Color.green.opacity(0.1))
+                            .cornerRadius(10)
                         }
-                        .padding()
-                        .background(Color.green.opacity(0.1))
-                        .cornerRadius(10)
+                        .sheet(isPresented: $showingAchievements) {
+                            AchievementView(user: user)
+                        }
 
                         // History
-                        VStack(alignment: .leading, spacing: 10) {
-                            Text("History:")
-                                .font(.headline)
-
-                            ForEach(user.history) { game in
-                                VStack(alignment: .leading, spacing: 5) {
-                                    Text("Game ID: \(game.id)")
-                                    Text("Difficulty: \(game.difficulty.capitalized)")
-                                    Text("Score: \(game.score)")
-                                    Text("Result: \(game.result)")
-                                }
-                                .padding(.bottom, 5)
+                        Button(action: {
+                            showingHistory = true
+                        }) {
+                            VStack(alignment: .leading, spacing: 10) {
+                                Text("History")
                             }
+                            .padding()
+                            .background(Color.blue.opacity(0.1))
+                            .cornerRadius(10)
                         }
-                        .padding()
-                        .background(Color.blue.opacity(0.1))
-                        .cornerRadius(10)
+                        .sheet(isPresented: $showingHistory) {
+                            HistoryView(user: user)
+                        }
                     }
                 } else {
                     Text("User not found")
@@ -88,13 +83,17 @@ struct DashboardView: View {
 
                 Spacer()
                 
-                NavigationLink("Logout", destination: ContentView())
-                    .foregroundColor(.white)
-                    .padding()
-                    .frame(maxWidth: .infinity)
-                    .background(Color.red)
-                    .cornerRadius(10)
-                    .padding(.horizontal)
+                Button(action: {
+                    handleLogout()
+                }) {
+                    Text("Logout")
+                        .foregroundColor(.white)
+                        .padding()
+                        .frame(maxWidth: .infinity)
+                        .background(Color.red)
+                        .cornerRadius(10)
+                }
+                .padding(.horizontal)
             }
             .onAppear {
                 loadUser()
@@ -106,6 +105,34 @@ struct DashboardView: View {
 
     private func loadUser() {
         user = userManager.getUser(username: username)
+    }
+    
+    private func completedMilestones() -> Int {
+        let milestones = [
+            user?.milestone.over10Score ?? false,
+            user?.milestone.over20Score ?? false,
+            user?.milestone.over50Score ?? false,
+            user?.milestone.firstGamePlayedOnEasy ?? false,
+            user?.milestone.firstGamePlayedOnMedium ?? false,
+            user?.milestone.firstGamePlayedOnHard ?? false
+        ]
+        return milestones.filter { $0 }.count
+    }
+
+    private func completedAchievements() -> Int {
+        let achievements = [
+            user?.achievement.explorersFirstStep ?? false,
+            user?.achievement.strategicThinker ?? false,
+            user?.achievement.persistentPlayer ?? false,
+            user?.achievement.curiousMind ?? false,
+            user?.achievement.precisionTraining ?? false,
+            user?.achievement.quickLearner ?? false
+        ]
+        return achievements.filter { $0 }.count
+    }
+
+    private func handleLogout() {
+        dismiss()
     }
 }
 
