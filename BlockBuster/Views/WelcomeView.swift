@@ -36,7 +36,7 @@ struct WelcomeView: View {
             .padding()
             .navigationTitle("Welcome")
             .navigationDestination(isPresented: $isLoggedIn) {
-                DashboardView()
+                DashboardView(username: username)
             }
         }
     }
