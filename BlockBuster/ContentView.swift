@@ -1,21 +1,22 @@
-//
-//  ContentView.swift
-//  BlockBuster
-//
-//  Created by Khang Nguyen Trong on 29/8/24.
-//
-
 import SwiftUI
 
 struct ContentView: View {
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
+        NavigationStack {
+            VStack {
+                Image(systemName: "globe")
+                    .imageScale(.large)
+                    .foregroundStyle(.tint)
+                Text("Hello, bruhh!")
+
+                NavigationLink("Go to Welcome View", destination: WelcomeView())
+                    .foregroundColor(.white)
+                    .padding()
+                    .background(Color.blue)
+                    .cornerRadius(10)
+            }
+            .padding()
         }
-        .padding()
     }
 }
 

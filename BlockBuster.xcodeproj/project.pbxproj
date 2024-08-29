@@ -14,6 +14,8 @@
 		6D9C915C2C808D1700232A07 /* BlockBusterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D9C915B2C808D1700232A07 /* BlockBusterTests.swift */; };
 		6D9C91662C808D1700232A07 /* BlockBusterUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D9C91652C808D1700232A07 /* BlockBusterUITests.swift */; };
 		6D9C91682C808D1700232A07 /* BlockBusterUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D9C91672C808D1700232A07 /* BlockBusterUITestsLaunchTests.swift */; };
+		6D9C91762C8090A800232A07 /* WelcomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D9C91752C8090A800232A07 /* WelcomeView.swift */; };
+		6D9C91782C80915900232A07 /* DashboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D9C91772C80915900232A07 /* DashboardView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -44,6 +46,8 @@
 		6D9C91612C808D1700232A07 /* BlockBusterUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BlockBusterUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		6D9C91652C808D1700232A07 /* BlockBusterUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockBusterUITests.swift; sourceTree = "<group>"; };
 		6D9C91672C808D1700232A07 /* BlockBusterUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockBusterUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		6D9C91752C8090A800232A07 /* WelcomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeView.swift; sourceTree = "<group>"; };
+		6D9C91772C80915900232A07 /* DashboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -94,6 +98,7 @@
 		6D9C91492C808D1500232A07 /* BlockBuster */ = {
 			isa = PBXGroup;
 			children = (
+				6D9C91742C80908500232A07 /* Views */,
 				6D9C914A2C808D1500232A07 /* BlockBusterApp.swift */,
 				6D9C914C2C808D1500232A07 /* ContentView.swift */,
 				6D9C914E2C808D1700232A07 /* Assets.xcassets */,
@@ -125,6 +130,15 @@
 				6D9C91672C808D1700232A07 /* BlockBusterUITestsLaunchTests.swift */,
 			);
 			path = BlockBusterUITests;
+			sourceTree = "<group>";
+		};
+		6D9C91742C80908500232A07 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				6D9C91752C8090A800232A07 /* WelcomeView.swift */,
+				6D9C91772C80915900232A07 /* DashboardView.swift */,
+			);
+			path = Views;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -258,6 +272,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				6D9C914D2C808D1500232A07 /* ContentView.swift in Sources */,
+				6D9C91782C80915900232A07 /* DashboardView.swift in Sources */,
+				6D9C91762C8090A800232A07 /* WelcomeView.swift in Sources */,
 				6D9C914B2C808D1500232A07 /* BlockBusterApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
