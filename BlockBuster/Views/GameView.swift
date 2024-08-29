@@ -6,26 +6,27 @@ struct GameView: View {
     @State private var hiddenColors: [Color] = []
     @State private var guessColors: [Color] = []
     @State private var showResult = false
+    @State private var revealHiddenColors = false
     
-    let availableColors: [Color] = [.red, .yellow, .blue, .green]
-    let availableColorNames: [String]
+    let availableColors: [Color]
     let gridColumns: [GridItem]
     
     init(difficulty: String) {
         self.difficulty = difficulty
         
+        // Configure available colors and grid columns based on difficulty
         switch difficulty {
         case "easy":
-            availableColorNames = ["blue", "green"]
+            availableColors = [.cyan, .blue]
             gridColumns = [GridItem(.flexible()), GridItem(.flexible())] // 2 columns
         case "medium":
-            availableColorNames = ["red", "yellow", "blue"]
+            availableColors = [.red, .orange, .yellow]
             gridColumns = [GridItem(.flexible()), GridItem(.flexible()), GridItem(.flexible())] // 3 columns
         case "hard":
-            availableColorNames = ["red", "yellow", "blue", "green"]
+            availableColors = [.purple, .green, .cyan, .blue]
             gridColumns = [GridItem(.flexible()), GridItem(.flexible()), GridItem(.flexible()), GridItem(.flexible())] // 4 columns
         default:
-            availableColorNames = ["blue", "green"]
+            availableColors = [.cyan, .blue]
             gridColumns = [GridItem(.flexible()), GridItem(.flexible())] // Default to 2 columns
         }
     }
@@ -39,7 +40,7 @@ struct GameView: View {
             // Hidden blocks (top layer)
             LazyVGrid(columns: gridColumns, spacing: 10) {
                 ForEach(hiddenColors.indices, id: \.self) { index in
-                    ColorBlockView(color: .gray) // Hidden color block
+                    ColorBlockView(color: revealHiddenColors ? hiddenColors[index] : .gray) // Reveal color if applicable
                 }
             }
             .padding(.bottom, 20)
@@ -55,6 +56,7 @@ struct GameView: View {
             // Check Button
             Button(action: {
                 showResult = true
+                revealHiddenColors = true // Reveal hidden colors when checking
             }) {
                 Text("Check")
                     .padding()
@@ -65,7 +67,7 @@ struct GameView: View {
             }
             .padding(.horizontal)
             .alert(isPresented: $showResult) {
-                Alert(title: Text("Result"), message: Text(checkResult() ? "Correct!" : "Try Again"), dismissButton: .default(Text("OK")))
+                Alert(title: Text("Result"), message: Text(checkResult() ? "Correct!" : "Incorrect"), dismissButton: .default(Text("OK")))
             }
             
             Spacer()
@@ -82,23 +84,23 @@ struct GameView: View {
         let blockCount: Int
         switch difficulty {
         case "easy":
-            blockCount = 2
+            blockCount = 4 // 2 hidden blocks, 2 guess blocks
         case "medium":
-            blockCount = 3
+            blockCount = 6 // 3 hidden blocks, 3 guess blocks
         case "hard":
-            blockCount = 4
+            blockCount = 8 // 4 hidden blocks, 4 guess blocks
         default:
-            blockCount = 2
+            blockCount = 4
         }
         
         // Generate random hidden colors
-        hiddenColors = availableColors.shuffled().prefix(blockCount).map { $0 }
-        guessColors = Array(repeating: .clear, count: blockCount)
+        hiddenColors = availableColors.shuffled().prefix(blockCount / 2).map { $0 }
+        guessColors = Array(repeating: .clear, count: blockCount / 2)
     }
     
     private func checkResult() -> Bool {
         // Compare guessed colors with hidden colors
-        return guessColors.elementsEqual(hiddenColors)
+        return guessColors == hiddenColors
     }
 }
 
@@ -142,14 +144,17 @@ struct ColorPickerBlockView: View {
     private func colorName(_ color: Color) -> String {
         switch color {
         case .red: return "Red"
+        case .orange: return "Orange"
         case .yellow: return "Yellow"
-        case .blue: return "Blue"
         case .green: return "Green"
+        case .cyan: return "Cyan"
+        case .blue: return "Blue"
+        case .purple: return "Purple"
         default: return "Unknown"
         }
     }
 }
 
 #Preview {
-    GameView(difficulty: "easy")
+    GameView(difficulty: "medium")
 }
