@@ -7,6 +7,11 @@ struct GameView: View {
     @State private var guessColors: [Color] = []
     @State private var showResult = false
     @State private var revealHiddenColors = false
+    @State private var score: Int = 0
+    @State private var resultMessage: String = "None"
+    @State private var winRate: Double = 0.0
+    
+    @State private var gameHistory: [GameHistory] = []
     
     let availableColors: [Color]
     let gridColumns: [GridItem]
@@ -55,8 +60,10 @@ struct GameView: View {
             
             // Check Button
             Button(action: {
-                showResult = true
                 revealHiddenColors = true // Reveal hidden colors when checking
+                calculateScore() // Calculate the score and win rate based on guesses
+                saveGameHistory() // Save the game result
+                showResult = true
             }) {
                 Text("Check")
                     .padding()
@@ -67,7 +74,7 @@ struct GameView: View {
             }
             .padding(.horizontal)
             .alert(isPresented: $showResult) {
-                Alert(title: Text("Result"), message: Text(checkResult() ? "Correct!" : "Incorrect"), dismissButton: .default(Text("OK")))
+                Alert(title: Text("Result"), message: Text("\(resultMessage)\nScore: \(score)\nWin Rate: \(winRate, specifier: "%.2f")"), dismissButton: .default(Text("OK")))
             }
             
             Spacer()
@@ -98,9 +105,69 @@ struct GameView: View {
         guessColors = Array(repeating: .clear, count: blockCount / 2)
     }
     
-    private func checkResult() -> Bool {
+    private func checkResult() -> (correctGuesses: Int, resultMessage: String) {
         // Compare guessed colors with hidden colors
-        return guessColors == hiddenColors
+        let correctGuesses = zip(guessColors, hiddenColors).filter { $0 == $1 }.count
+        let resultMessage: String
+        
+        if correctGuesses == hiddenColors.count {
+            resultMessage = "Great"
+        } else if correctGuesses > 0 {
+            resultMessage = "Almost There"
+        } else {
+            resultMessage = "Try Again"
+        }
+        
+        return (correctGuesses, resultMessage)
+    }
+    
+    private func calculateScore() {
+        let (correctGuesses, message) = checkResult()
+        resultMessage = message
+        
+        // Score calculation based on difficulty
+        let difficultyMultiplier: Int
+        switch difficulty {
+        case "easy":
+            difficultyMultiplier = 1
+        case "medium":
+            difficultyMultiplier = 2
+        case "hard":
+            difficultyMultiplier = 3
+        default:
+            difficultyMultiplier = 1
+        }
+        
+        score = correctGuesses * difficultyMultiplier
+        winRate = Double(correctGuesses) / Double(hiddenColors.count)
+    }
+    
+    private func saveGameHistory() {
+        let newGame = GameHistory(
+            id: gameHistory.count + 1,
+            difficulty: difficulty,
+            blocks: guessColors.map { colorName($0) },
+            target: hiddenColors.map { colorName($0) },
+            result: resultMessage,
+            winRate: winRate,
+            score: score
+        )
+        
+        gameHistory.append(newGame)
+        // You could save gameHistory to a file or UserDefaults for persistence
+    }
+    
+    private func colorName(_ color: Color) -> String {
+        switch color {
+        case .red: return "Red"
+        case .orange: return "Orange"
+        case .yellow: return "Yellow"
+        case .green: return "Green"
+        case .cyan: return "Cyan"
+        case .blue: return "Blue"
+        case .purple: return "Purple"
+        default: return "Unknown"
+        }
     }
 }
 
