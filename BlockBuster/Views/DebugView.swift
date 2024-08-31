@@ -12,9 +12,25 @@ struct DebugView: View {
                 Text("No users found or failed to decode.")
                     .padding()
             }
+            
+            Button(action: {
+                clearAppStorage()
+            }) {
+                Text("Clear All Data")
+                    .foregroundColor(.white)
+                    .padding()
+                    .background(Color.red)
+                    .cornerRadius(10)
+            }
+            .padding()
         }
         .padding()
         .navigationTitle("Debug View")
+    }
+
+    private func clearAppStorage() {
+        storedUsersData = Data() // Clear stored data
+        print("AppStorage data cleared") // Optional: Print a message to debug console
     }
 }
 

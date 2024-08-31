@@ -199,7 +199,7 @@ struct GameView: View {
             user.totalScore += score
             user.numGame += 1
             user.winRate = calculateNewWinRate(for: user)
-
+            user.milestone = updateMilestones(for: user)
             // Save updated user data
             userManager.addUser(user)
         }
@@ -207,10 +207,43 @@ struct GameView: View {
 
     private func calculateNewWinRate(for user: User) -> Double {
         let totalGames = Double(user.numGame)
-        let totalCorrectGuesses = user.history.filter { $0.result == "Great" }.count
-        return totalGames > 0 ? (Double(totalCorrectGuesses) / totalGames) : 0.0
+        let totalWinRate = user.history.reduce(0.0) { (result, game) in
+            result + game.winRate
+        }
+        return totalGames > 0 ? (totalWinRate / totalGames) : 0.0
     }
 
+    private func updateMilestones(for user: User) -> Milestone {
+        var milestones = user.milestone
+        
+        // Check and update milestones
+        if user.totalScore > 10 {
+            milestones.over10Score = true
+        }
+        
+        if user.totalScore > 20 {
+            milestones.over20Score = true
+        }
+        
+        if user.totalScore > 50 {
+            milestones.over50Score = true
+        }
+        
+        // Update milestone for difficulty-specific first game
+        if difficulty == "easy" {
+            milestones.firstGamePlayedOnEasy = true
+        }
+        
+        if difficulty == "medium" {
+            milestones.firstGamePlayedOnMedium = true
+        }
+        
+        if difficulty == "hard" {
+            milestones.firstGamePlayedOnHard = true
+        }
+
+        return milestones
+    }
 }
 
 struct ColorBlockView: View {
