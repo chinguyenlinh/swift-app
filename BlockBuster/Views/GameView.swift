@@ -4,10 +4,11 @@ struct GameView: View {
     let difficulty: String
     let username: String
     @State private var user: User?
+    @State private var showingGameSettings = false
+    @State private var navigateToDashboard = false // State to handle navigation
 
     @State private var hiddenColors: [Color] = []
     @State private var guessColors: [Color] = []
-    @State private var showResult = false
     @State private var revealHiddenColors = false
     @State private var score: Int = 0
     @State private var resultMessage: String = "None"
@@ -41,52 +42,64 @@ struct GameView: View {
     }
     
     var body: some View {
-        VStack {
-            Text("Difficulty: \(difficulty.capitalized)")
-                .font(.largeTitle)
+        NavigationStack {
+            VStack {
+                Text("Difficulty: \(difficulty.capitalized)")
+                    .font(.largeTitle)
+                    .padding(.bottom, 20)
+                
+                // Hidden blocks (top layer)
+                LazyVGrid(columns: gridColumns, spacing: 10) {
+                    ForEach(hiddenColors.indices, id: \.self) { index in
+                        ColorBlockView(color: revealHiddenColors ? hiddenColors[index] : .gray) // Reveal color if applicable
+                    }
+                }
                 .padding(.bottom, 20)
-            
-            // Hidden blocks (top layer)
-            LazyVGrid(columns: gridColumns, spacing: 10) {
-                ForEach(hiddenColors.indices, id: \.self) { index in
-                    ColorBlockView(color: revealHiddenColors ? hiddenColors[index] : .gray) // Reveal color if applicable
+                
+                // Guess blocks (bottom layer)
+                LazyVGrid(columns: gridColumns, spacing: 10) {
+                    ForEach(guessColors.indices, id: \.self) { index in
+                        ColorPickerBlockView(selectedColor: $guessColors[index], availableColors: availableColors)
+                    }
                 }
-            }
-            .padding(.bottom, 20)
-            
-            // Guess blocks (bottom layer)
-            LazyVGrid(columns: gridColumns, spacing: 10) {
-                ForEach(guessColors.indices, id: \.self) { index in
-                    ColorPickerBlockView(selectedColor: $guessColors[index], availableColors: availableColors)
+                .padding(.bottom, 20)
+                
+                // Check Button
+                Button(action: {
+                    revealHiddenColors = true // Reveal hidden colors when checking
+                    calculateScore() // Calculate the score and win rate based on guesses
+                    saveGameHistory() // Save the game result
+                    showingGameSettings = true
+                }) {
+                    Text("Check")
+                        .padding()
+                        .frame(maxWidth: .infinity)
+                        .background(Color.green)
+                        .foregroundColor(.white)
+                        .cornerRadius(10)
                 }
+                .padding(.horizontal)
+                .alert(isPresented: $showingGameSettings) {
+                    Alert(
+                        title: Text("Result"),
+                        message: Text("\(resultMessage)\nScore: \(score)\nWin Rate: \(winRate, specifier: "%.2f")"),
+                        dismissButton: .default(Text("OK")) {
+                            // Navigate to DashboardView after dismissing the alert
+                            navigateToDashboard = true
+                        }
+                    )
+                }
+                
+                Spacer()
             }
-            .padding(.bottom, 20)
-            
-            // Check Button
-            Button(action: {
-                revealHiddenColors = true // Reveal hidden colors when checking
-                calculateScore() // Calculate the score and win rate based on guesses
-                saveGameHistory() // Save the game result
-                showResult = true
-            }) {
-                Text("Check")
-                    .padding()
-                    .frame(maxWidth: .infinity)
-                    .background(Color.green)
-                    .foregroundColor(.white)
-                    .cornerRadius(10)
+            .padding()
+            .navigationTitle("Game")
+            .navigationDestination(isPresented: $navigateToDashboard) {
+                DashboardView(username: username)
             }
-            .padding(.horizontal)
-            .alert(isPresented: $showResult) {
-                Alert(title: Text("Result"), message: Text("\(resultMessage)\nScore: \(score)\nWin Rate: \(winRate, specifier: "%.2f")"), dismissButton: .default(Text("OK")))
+            .onAppear {
+                setupGame()
             }
-            
-            Spacer()
-        }
-        .padding()
-        .navigationTitle("Game")
-        .onAppear {
-            setupGame()
         }
     }
     
@@ -144,10 +157,6 @@ struct GameView: View {
         
         score = correctGuesses * difficultyMultiplier
         winRate = Double(correctGuesses) / Double(hiddenColors.count)
-    }
-
-    private func loadUser() {
-        user = userManager.getUser(username: username)
     }
 
     private func saveGameHistory() {
@@ -240,7 +249,7 @@ struct ColorPickerBlockView: View {
                 .cornerRadius(5)
         }
     }
-    
+
     private func colorName(_ color: Color) -> String {
         switch color {
         case .red: return "Red"
