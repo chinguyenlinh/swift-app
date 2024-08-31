@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		6D8A62292C82FE9D00835C82 /* ResultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D8A62282C82FE9D00835C82 /* ResultView.swift */; };
 		6D9C914B2C808D1500232A07 /* BlockBusterApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D9C914A2C808D1500232A07 /* BlockBusterApp.swift */; };
 		6D9C914D2C808D1500232A07 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D9C914C2C808D1500232A07 /* ContentView.swift */; };
 		6D9C914F2C808D1700232A07 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6D9C914E2C808D1700232A07 /* Assets.xcassets */; };
@@ -48,7 +47,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		6D8A62282C82FE9D00835C82 /* ResultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultView.swift; sourceTree = "<group>"; };
 		6D9C91472C808D1500232A07 /* BlockBuster.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BlockBuster.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6D9C914A2C808D1500232A07 /* BlockBusterApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockBusterApp.swift; sourceTree = "<group>"; };
 		6D9C914C2C808D1500232A07 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -164,7 +162,6 @@
 				6D9C91752C8090A800232A07 /* WelcomeView.swift */,
 				6D9C91872C80986600232A07 /* DebugView.swift */,
 				6D9C91772C80915900232A07 /* DashboardView.swift */,
-				6D8A62282C82FE9D00835C82 /* ResultView.swift */,
 				6D9C918F2C80A40100232A07 /* GameSettingView.swift */,
 				6D9C91912C80A41300232A07 /* GameView.swift */,
 				6D9C91892C809DDF00232A07 /* AchievementView.swift */,
@@ -328,7 +325,6 @@
 				6D9C918A2C809DDF00232A07 /* AchievementView.swift in Sources */,
 				6D9C914D2C808D1500232A07 /* ContentView.swift in Sources */,
 				6D9C91922C80A41300232A07 /* GameView.swift in Sources */,
-				6D8A62292C82FE9D00835C82 /* ResultView.swift in Sources */,
 				6D9C918E2C809DF800232A07 /* HistoryView.swift in Sources */,
 				6D9C91782C80915900232A07 /* DashboardView.swift in Sources */,
 				6D9C91762C8090A800232A07 /* WelcomeView.swift in Sources */,

@@ -27,7 +27,11 @@ class UserManager: ObservableObject {
     }
 
     func addUser(_ user: User) {
-        users.append(user)
+        if let index = users.firstIndex(where: { $0.username.lowercased() == user.username.lowercased() }) {
+            users[index] = user
+        } else {
+            users.append(user)
+        }
         saveUsers()
     }
 }

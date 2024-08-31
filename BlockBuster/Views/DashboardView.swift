@@ -88,7 +88,7 @@ struct DashboardView: View {
                             .cornerRadius(10)
                         }
                         .sheet(isPresented: $showingGameSettings) {
-                            GameSettingView()
+                            GameSettingView(username: username)
                         }
                     }
                 } else {

@@ -2,7 +2,9 @@ import SwiftUI
 
 struct GameView: View {
     let difficulty: String
-    
+    let username: String
+    @State private var user: User?
+
     @State private var hiddenColors: [Color] = []
     @State private var guessColors: [Color] = []
     @State private var showResult = false
@@ -12,12 +14,14 @@ struct GameView: View {
     @State private var winRate: Double = 0.0
     
     @State private var gameHistory: [GameHistory] = []
-    
+    @StateObject private var userManager = UserManager()
+
     let availableColors: [Color]
     let gridColumns: [GridItem]
     
-    init(difficulty: String) {
+    init(difficulty: String, username: String) {
         self.difficulty = difficulty
+        self.username = username
         
         // Configure available colors and grid columns based on difficulty
         switch difficulty {
@@ -141,10 +145,18 @@ struct GameView: View {
         score = correctGuesses * difficultyMultiplier
         winRate = Double(correctGuesses) / Double(hiddenColors.count)
     }
-    
+
+    private func loadUser() {
+        user = userManager.getUser(username: username)
+    }
+
     private func saveGameHistory() {
+        guard let user = userManager.getUser(username: username) else { return }
+        
+        let newGameID = user.history.count + 1
+        
         let newGame = GameHistory(
-            id: gameHistory.count + 1,
+            id: newGameID,
             difficulty: difficulty,
             blocks: guessColors.map { colorName($0) },
             target: hiddenColors.map { colorName($0) },
@@ -153,10 +165,12 @@ struct GameView: View {
             score: score
         )
         
-        gameHistory.append(newGame)
-        // You could save gameHistory to a file or UserDefaults for persistence
+        var updatedUser = user
+        updatedUser.history.append(newGame)
+        userManager.addUser(updatedUser)
+        updateUserData()
     }
-    
+
     private func colorName(_ color: Color) -> String {
         switch color {
         case .red: return "Red"
@@ -169,6 +183,25 @@ struct GameView: View {
         default: return "Unknown"
         }
     }
+    
+    private func updateUserData() {
+        if var user = userManager.getUser(username: username) {
+            // Update user statistics
+            user.totalScore += score
+            user.numGame += 1
+            user.winRate = calculateNewWinRate(for: user)
+
+            // Save updated user data
+            userManager.addUser(user)
+        }
+    }
+
+    private func calculateNewWinRate(for user: User) -> Double {
+        let totalGames = Double(user.numGame)
+        let totalCorrectGuesses = user.history.filter { $0.result == "Great" }.count
+        return totalGames > 0 ? (Double(totalCorrectGuesses) / totalGames) : 0.0
+    }
+
 }
 
 struct ColorBlockView: View {
@@ -223,5 +256,5 @@ struct ColorPickerBlockView: View {
 }
 
 #Preview {
-    GameView(difficulty: "medium")
+    GameView(difficulty: "medium", username: "Khang")
 }
